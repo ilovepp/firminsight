@@ -1,0 +1,9 @@
+readonly MONGO_IP="127.0.0.1"
+readonly MONGO_PORT=27017
+readonly MONGO_DATABASE="firminsight"
+readonly MONGO_FIRM_COLLECTION_NAME="firmwares"
+readonly MONGO_SCRAPY_COLLECTION_NAME="crawls"
+readonly FIRMWARE_STORE_PATH="/home/cy/Desktop/ICS"
+readonly DECOMPRESS_TEMP_PATH="/tmp"
+readonly BINARY_STORE_PATH="/home/cy/Desktop/Binarys"
+
