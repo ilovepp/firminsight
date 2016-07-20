@@ -17,9 +17,9 @@ NEWSPIDER_MODULE = 'mycrawler.spiders'
 # 数据库配置，firmware为数据库名字，iie_CERT为密码，MONGODB-CR为认证机制，注意mongodb默认认证机制
 # 不是MONGODB-CR，具体情况请查看，mongodb总结.doc
 #MONGO_URI = "mongodb://firmware:iie_CERT@10.10.13.154:27017/firmware?authMechanism=MONGODB-CR"
-MONGO_URI = "mongodb://127.0.0.1/firminsight"
-MONGO_DATABASE = "firminsight"
-MONGO_COLLECTION = "crawls"
+#MONGO_URI = "mongodb://10.10.12.82/firmware"
+#MONGO_DATABASE = "firmware"
+#MONGO_COLLECTION = "scrapy_items"
 
 #>>> from pymongo import MongoClient
 #>>> client = MongoClient('example.com')
@@ -100,3 +100,23 @@ ITEM_PIPELINES = {
 # myconfig
 firmlist_fc = ["Schneider", "Rockwell", "Abb","Siemens","Vipa"]  # 定义一个工控企业队列
 priority = ["Rockwell"]  # 最高优先级2，把最高优先级的厂商配置到此处
+
+
+###############################################################################################
+import codecs
+import ConfigParser
+config = ConfigParser.ConfigParser()
+globalconfigfile = r'../GLOBAL_CONFIG.config'
+config.readfp(codecs.open(globalconfigfile, "r", "utf-8"))
+MONGO_URI = config.get('globalinfo',"MONGO_IP")
+MONGO_DATABASE = config.get('globalinfo',"MONGO_DATABASE")
+MONGO_COLLECTION = config.get('globalinfo',"MONGO_SCRAPY_COLLECTION_NAME")
+dirs_root = config.get('globalinfo',"FIRMWARE_STORE_PATH")
+#file_size = config.get('globalinfo',"")
+
+configfile = r'./CONFIG.cfg'
+config.readfp(codecs.open(configfile, "r", "utf-8"))
+
+file_size = config.get('info',"FIRMWARES_SIZE_LIMIT")
+rockwelluser = config.get('info',"ROCKWELL_CRAWL_ACCOUNT")
+rockwellpwd = config.get('info',"ROCKWELL_CRAWL_PASSWORD")

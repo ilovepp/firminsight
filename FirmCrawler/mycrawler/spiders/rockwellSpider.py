@@ -12,24 +12,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 import mycrawler.items as MI
+from mycrawler.settings import rockwellpwd,rockwelluser
 
 
 class RockwellSpider(Spider):
     name = "rockwell"
-    def __init__(self,user = None,pwd = None,*args,**kwargs):
-        """
+    #def __init__(self,user = None,pwd = None,*args,**kwargs):
 
-        :param category:
-        :param ar:
-        :param ars:
-        """
-        super(RockwellSpider,self).__init__(*args,**kwargs)
-        self.user = user
-        self.pwd = pwd
+     #   super(RockwellSpider,self).__init__(*args,**kwargs)
+      #  self.user = user
+       # self.pwd = pwd
         #self.start_urls = [URL]
         #self.timeout = 7
         #self.trytimes = 3
         #self.typefilter = ["pdf"]
+    user = rockwelluser
+    pwd = rockwellpwd
 
     start_urls = [
         "http://compatibility.rockwellautomation.com/Pages/MultiProductDownload.aspx?keyword=Controller"
@@ -61,13 +59,13 @@ class RockwellSpider(Spider):
             usrtext = WebDriverWait(self.browser, RockwellSpider.timeout * 2).until(
                 EC.presence_of_element_located((By.XPATH, "//input[@name='userName']")))
 
-            #usrtext.send_keys(RockwellSpider.user)
-            usrtext.send_keys(self.user)
-            #self.browser.find_element_by_xpath(
-             #   "//input[@name='password']").send_keys(RockwellSpider.pwd)
-
+            usrtext.send_keys(RockwellSpider.user)
+            #usrtext.send_keys(self.user)
             self.browser.find_element_by_xpath(
-                "//input[@name='password']").send_keys(self.pwd)
+                "//input[@name='password']").send_keys(RockwellSpider.pwd)
+
+            #self.browser.find_element_by_xpath(
+             #   "//input[@name='password']").send_keys(self.pwd)
             self.noTimeoutClick(self.browser.find_element_by_xpath(
                 "//input[@name='rememberMe']"))
             self.browser.execute_script("javascript:document.User.submit()")
@@ -318,11 +316,11 @@ class RockwellSpider(Spider):
             #item["Title"] = l.find_element_by_xpath(
              #   "span[position()=1]").text.split(":", 1).pop().strip()
 
-            item["ProducVersion"] = l.find_element_by_xpath(
+            item["ProductVersion"] = l.find_element_by_xpath(
                 "span[position()=2]").text.split(":", 1).pop().strip()
             item["Description"] = inner.find_element_by_xpath(
                 "span[position()=1]").text.split(":", 1).pop().strip()
-            item["ProducModel"] = item["URL"].split("/")[-2]
+            item["ProductModel"] = item["URL"].split("/")[-2]
 
             #item["Info"]["Model"] = item["Title"].split("for")[-1].split("V")[0]
             item["FirmwareName"] = inner.find_element_by_xpath(

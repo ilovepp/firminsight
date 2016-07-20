@@ -59,16 +59,22 @@ class OpenwrtSpider(Spider):
                 ######################　名字中提取######################
                 name4 = item["FirmwareName"]
                 if name4.split("-")[0]== "110829":
+                    try:
+                    	date1 = name4.split("-")[4]
+                    	date2 = name4.split("-")[5]
 
-                    date1 = name4.split("-")[4]
-                    date2 = name4.split("-")[5]
-
-                    date = date1+ "-" +date2
+                    	date = date1+ "-" +date2
+                    except:
+                        date = name4.split("-")[4]
 
                 elif name4.split("-")[0] == "openwrt" and name4.split("-")[1] == "ar71xx":
-                    date1=name4.split("-")[3]
-                    date2 = name4.split("-")[4]
-                    date = date1 + "-" + date2
+                    try:
+                     
+                    	date1=name4.split("-")[3]
+                    	date2 = name4.split("-")[4]
+                    	date = date1 + "-" + date2
+                    except:
+                        date = name4.split("-")[1]
 
                 elif name4.split("-")[0] == "openwrt" and name4.split("-")[1] != "ar71xx" and name4.split("-")[1] != "ramips":
                     date = name4.split("-")[1]

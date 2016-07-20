@@ -13,9 +13,26 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import *
 import logging
 import multiprocessing
+import codecs
 reload(sys)
 sys.setdefaultencoding('utf-8')
-from mycrawler.settings import firmlist_fc, MONGO_URI
+from mycrawler.settings import firmlist_fc, MONGO_URI,MONGO_COLLECTION,MONGO_DATABASE,file_size,dirs_root
+#from __future__ import with_statement
+
+import ConfigParser
+config = ConfigParser.ConfigParser()
+configfile = r'./CONFIG.cfg'
+globalconfigfile = r'../GLOBAL_CONFIG.config'
+config.readfp(codecs.open(configfile, "r", "utf-8"))
+config.readfp(codecs.open(globalconfigfile, "r", "utf-8"))
+
+user = config.get('info',"SIEMENS_DOWNLOAD_ACCOUNT")
+pwd = config.get('info',"SIEMENS_DOWNLOAD_PASSWORD")
+
+
+
+#user = "sungong"
+#pwd = "SUNgong123"
 
 def login_url(timeout):
     #timeout=10
@@ -30,9 +47,9 @@ def login_url(timeout):
 
 
     username=WebDriverWait(driver, timeout).until(EC.presence_of_element_located((By.ID,"ContentPlaceHolder1_TextSiemensLogin")))
-    username.send_keys("sungong")
+    username.send_keys(user)
 
-    driver.find_element_by_id("ContentPlaceHolder1_TextPassword").send_keys("SUNgong123")
+    driver.find_element_by_id("ContentPlaceHolder1_TextPassword").send_keys(pwd)
     driver.find_element_by_id("ContentPlaceHolder1_LoginRememberUserNamePassword").click()
     driver.find_element_by_id("ContentPlaceHolder1_LoginUserNamePasswordButton").click()
 
@@ -47,15 +64,21 @@ def login_url(timeout):
 
 
 conn = pymongo.MongoClient(MONGO_URI)
-db = conn.firmware  # 使用数据库名为firmware
-collection = db.scrapy_items  # 使用集合scrapy_items
-collectionB = db.firmware_info  # 使用集合firmware_innfo
+db = conn.get_database(MONGO_DATABASE)  # 使用数据库名为firmware
+collection = db.get_collection(MONGO_COLLECTION)  # 使用集合scrapy_items
+#collectionB = db.firmware_info  # 使用集合firmware_innfo
 
-dir1 = "/home/byfeelus/firmware/Druid/Siemens/"
-file_size = 104857600  # 默认文件大小是100m
+#dirs_root = "/home/byfeelus/firmware/Druid/"
+#file_size = 104857600  # 默认文件大小是100m
+
+firm = "Siemens"
+dir1 = os.path.join(dirs_root,firm)
+
+
 
 if not os.path.exists(dir1):
-	os.makedirs(dir1)
+
+    os.makedirs(dir1)
 
 
 print "###################"
@@ -84,7 +107,7 @@ if collection.find({"Manufacturer":"Siemens","Status":1}).count()>0:
 
         print link
 
-        print "mashangkaishi try"
+        print " try "
         name = cur["FirmwareName"]
         filename = os.path.join(dir1,name)
         print filename
@@ -162,9 +185,9 @@ if collection.find({"Manufacturer":"Siemens","Status":1}).count()>0:
         else:
             collection.update({'_id': cur['_id']}, {
                                 "$set": {'Status': 3, }}) # 取时间
-            print 'yichang aaaaaaaaaaaaaaaa'
+            print 'error'
 
-print "xiazaiwancheng over!!!"
+print "over!!!"
 
 
 

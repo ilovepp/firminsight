@@ -11,18 +11,23 @@ import hashlib
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
-from mycrawler.settings import firmlist_fc, MONGO_URI
+from mycrawler.settings import firmlist_fc, MONGO_URI,dirs_root,MONGO_DATABASE,MONGO_COLLECTION,file_size
 
 import multiprocessing
 
 
-conn = pymongo.MongoClient(MONGO_URI)
-db = conn.firmware  # 使用数据库名为firmware
-collection = db.scrapy_items  # 使用集合scrapy_items
-collectionB = db.firmware_info  # 使用集合firmware_innfo
 
-dirs_root = "/home/byfeelus/firmware/Druid/"
-file_size = 104857600  # 默认文件大小是100m
+conn = pymongo.MongoClient(MONGO_URI)
+print "################"
+db = conn.get_database(MONGO_DATABASE)  # 使用数据库名为firmware
+#print type(db)
+#print type(MONGO_DATABASE)
+#collection = db.scrapy_items  # 使用集合scrapy_items
+collection = db.get_collection(MONGO_COLLECTION)
+#collectionB = db.firmware_info  # 使用集合firmware_innfo
+
+#dirs_root = "/home/byfeelus/firmware/Druid/"
+#file_size = 104857600  # 默认文件大小是100m
 # 加header，模拟浏览器
 header = {
     'User-Agent': "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:39.0) Gecko/20100101 Firefox/39.0"}
@@ -55,9 +60,9 @@ def download_url(cur):
     if not os.path.exists(dirs1):
         os.makedirs(dirs1)
 
-    dirs = os.path.join(dirs1,fileclass)
-    if not os.path.exists(dirs):
-        os.makedirs(dirs)
+    #dirs = os.path.join(dirs1,fileclass)
+    #if not os.path.exists(dirs):
+     #   os.makedirs(dirs)
 
     m = hashlib.md5()
     m.update(mylink)
@@ -65,7 +70,7 @@ def download_url(cur):
     #b =  a[0] +a[1] +a[2]
 
     name1 = a + name
-    filename = os.path.join(dirs, name1)   # 定义文件的绝对路径
+    filename = os.path.join(dirs1, name1)   # 定义文件的绝对路径
 
     # 判断文件是否已经存在，若不存在，继续下载，若存在，输出路径不下载
     if cur.has_key("Path") and cur["Path"] == filename:
