@@ -1,8 +1,9 @@
-readonly ITERATIVE_DEPPTH=10
-readonly DECOMPRESS_TIMEOUT=45
-readonly EXTENSION_BLACKLIST=(7z zlib cramfs msi exe zip eds ico pkg)
-readonly EXTENSION_WHITELIST=(hex)
-readonly FILE_RETURN_BLACKLIST=(empty document text image archive compressed Squashfs)
-readonly FILE_RETURN_WHITELIST=(ELF)
-readonly INSTRUCTION_SET_DETECT_METHOD_SELECT=0 # 0:use inst detect arithmetic  1:use elf header 
+[bingatherconfig]
+ITERATIVE_DEPPTH=10
+DECOMPRESS_TIMEOUT=45
+EXTENSION_BLACKLIST=(7z zlib cramfs msi exe zip eds ico pkg)
+EXTENSION_WHITELIST=(hex)
+FILE_RETURN_BLACKLIST=(empty document text image archive compressed Squashfs)
+FILE_RETURN_WHITELIST=(ELF)
+INSTRUCTION_SET_DETECT_METHOD_SELECT=0 # 0:use inst detect arithmetic  1:use elf header 
 

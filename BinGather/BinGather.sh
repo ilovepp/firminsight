@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source ../GLOBAL_CONFIG
-source CONFIG
+eval `tail -n +2 ../GLOBAL_CONFIG`
+eval `tail -n +2 CONFIG`
 
 echo "------------------current config--------------------------"
 echo "ITERATIVE_DEPPTH=$ITERATIVE_DEPPTH"
@@ -136,30 +136,29 @@ do
 					6) BinInstSet="PowerPC-Little";;
 				esac		
 				echo ">>>>find ${BinInstSet} by inst detect arithmetic"		
-			else
-				if [ -n "`file "$BinPath"|grep ELF`" ];then
-					temp=0
-					if [ -n "`file "$BinPath"|grep MIPS`" ];then
-						temp=1
-						[ -n "`file "$BinPath"|grep MSB`" ] && temp=2
-					elif [ -n "`file "$BinPath"|grep ARM`" ];then
-						temp=3
-						[ -n "`file "$BinPath"|grep MSB`" ] && temp=4
-					elif [ -n "`file "$BinPath"|grep -E "ppc|PowerPC"`" ];then
-						temp=5
-						[ -n "`file "$BinPath"|grep LSB`" ] && temp=6
-					fi
-					case $temp in
-						0) BinInstSet="unknown";;			
-						1) BinInstSet="MIPS-Little";;
-						2) BinInstSet="MIPS-Big";;
-						3) BinInstSet="ARM-Little";;
-						4) BinInstSet="ARM-Big";;
-						5) BinInstSet="PowerPC-Big";;
-						6) BinInstSet="PowerPC-Little";;
-					esac
-					echo ">>>>find ${BinInstSet} by elf header"
+			fi
+			if [ "$BinInstSet" = "unknown" ] || [ -n "`file "$BinPath"|grep ELF`" ];then
+				temp=0
+				if [ -n "`file "$BinPath"|grep MIPS`" ];then
+					temp=1
+					[ -n "`file "$BinPath"|grep MSB`" ] && temp=2
+				elif [ -n "`file "$BinPath"|grep ARM`" ];then
+					temp=3
+					[ -n "`file "$BinPath"|grep MSB`" ] && temp=4
+				elif [ -n "`file "$BinPath"|grep -E "ppc|PowerPC"`" ];then
+					temp=5
+					[ -n "`file "$BinPath"|grep LSB`" ] && temp=6
 				fi
+				case $temp in
+					0) BinInstSet="unknown";;			
+					1) BinInstSet="MIPS-Little";;
+					2) BinInstSet="MIPS-Big";;
+					3) BinInstSet="ARM-Little";;
+					4) BinInstSet="ARM-Big";;
+					5) BinInstSet="PowerPC-Big";;
+					6) BinInstSet="PowerPC-Little";;
+				esac
+				echo ">>>>find ${BinInstSet} by elf header"
 			fi
 			BinSize=$(ls -l "$BinPath"|awk '{print $5}')
 			if [ "$BinInstSet" != "unknown" ] || [ -n "$ExtensionWhitelist" -a -n "`file "$BinSuffix"|grep -E "$ExtensionWhitelist"`" ] || [ -n "$FileReturnWhitelist" -a -n "`file "$BinPath"|grep -E "$FileReturnWhitelist"`" ] ;then
