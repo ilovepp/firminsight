@@ -111,7 +111,7 @@ do
 				[ "$BinMd5" = "$md5value" ] && visited_flag=1 && break				
 			done
 			[ "$visited_flag" = 1 ] && echo ">>has the same md5!!!" && continue
-			md5list[visitID]=$BinMd5
+			md5list[$visitID]=$BinMd5
 			((visitID++))		
 
 			BinSuffix="" && [ "${BinName##*.}" != "$BinName" ] && BinSuffix="${BinName##*.}"
