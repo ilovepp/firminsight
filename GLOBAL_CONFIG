@@ -1,7 +1,7 @@
 [globalconfig]
 MONGO_IP=127.0.0.1
 MONGO_PORT=27017
-MONGO_DATABASE=test
+MONGO_DATABASE=firminsight
 MONGO_FIRM_COLLECTION_NAME=firmwares
 MONGO_SCRAPY_COLLECTION_NAME=crawls
 FIRMWARE_STORE_PATH=/home/cy/Desktop/test_download
