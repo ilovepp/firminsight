@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ls "$1"|grep -E -i -o 'dnp3|modbus|profibus|mpi|s7|snmp|rs485|smtp|iec850|iec870'

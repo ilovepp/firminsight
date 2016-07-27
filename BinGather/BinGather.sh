@@ -172,6 +172,7 @@ do
 				for plugin in ${plugins[@]}
 				do
 					content=$(Plugin/$plugin "$BinPath")
+					[ -z "$content" ] && continue
 					mongo_cmd="db.firmwares.update({FirmID:${FirmID},\"BinFiles.BinMD5\":\"${BinMd5}\"},{\$set:{\"BinFiles.$.${plugin}\":'${content}'}})"
 					echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1						
 				done
