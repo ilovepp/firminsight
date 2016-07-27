@@ -1,0 +1,6 @@
+[binrelationconfig]
+
+THRESHOLD=10
+MANUFACTURER_LIST=(Schneider)
+#MANUFACTURER_LIST=(Abb Rockwell Schneider Siemens Vipa)
+

@@ -1,12 +1,12 @@
 #!/bin/bash
 
 eval `tail -n +2 ../GLOBAL_CONFIG`
-eval `tail -n +2 ../BinGather/CONFIG`
+eval `tail -n +2 CONFIG`
 
 target_firm_id=$1
 target_bin="$2"
 
-echo "serach similar binarys of FirmID:${target_firm_id}'s BinName:${target_bin}"
+#echo "serach similar binarys of FirmID:${target_firm_id}'s BinName:${target_bin}"
 
 mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.find({FirmID:${target_firm_id},\"BinFiles.BinName\":\"${target_bin}\"},{BinFiles:1,_id:0}).toArray();"
 mongo_return=$(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|grep -E "\"BinName\" :|\"ssdeep\" :")
@@ -35,18 +35,30 @@ do
 	break
 done
 
-mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.count({BinFileCount:{\$gt:0}});"
+#{$or:[{Manufacturer:"Abb"},{Manufacturer:"Rockwell"}],BinFileCount:{$gt:0}}
+
+for manufacturer in ${MANUFACTURER_LIST[@]};do
+	TEMP="{Manufacturer:\"$manufacturer\"},$TEMP"			
+done
+
+#TEMP="{Manufacturer:\"Abb\"},{Manufacturer:\"Rockwell\"}"
+#echo $TEMP
+
+CONDITION="{\$or:[$TEMP],BinFileCount:{\$gt:0}}"
+
+mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.count(${CONDITION});"
 firmnum=$(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|tail -1)
 ((firmnum--))
 for index in `seq 0 $firmnum`
 do
 	#echo "***********************************************"
-	mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.find({BinFileCount:{\$gt:0}},{Manufacturer:1,FirmID:1,FirmName:1,BinFileCount:1,BinFiles:1,_id:0}).limit(1).skip(${index}).toArray();"
+	
+	mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.find(${CONDITION},{Manufacturer:1,FirmID:1,FirmName:1,BinFileCount:1,BinFiles:1,_id:0}).limit(1).skip(${index}).toArray();"
 	mongo_return=$(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|grep -E "\"BinName\" :|\"ssdeep\" :|\"Manufacturer\" :|\"FirmID\" :|\"FirmName\" :|\"BinFileCount\" :")
 
 	FirmID=$(echo $mongo_return|awk -F, '{print $1}'|awk -F: '{print $2}'|sed -e 's/^[ \t]*//g' -e 's/[ \t]*$//g')
 	#echo "FirmID:$FirmID"
-
+	[ $FirmID -eq  $target_firm_id ] && continue
 	FirmName=$(echo $mongo_return|awk -F, '{print $2}'|awk -F: '{print $2}'|sed -e 's/^[ \t]*//g' -e 's/[ \t]*$//g')
 	#echo "FirmName:$FirmName"
 
@@ -84,9 +96,9 @@ do
 	for ((i=0;i<${#bin_name_list[@]};i++))
 	do
 		echo "${ssdeep_list[i]}"|sed 's/\@_\@/\n/g' > ${DECOMPRESS_TEMP_PATH}/${temp_bin}.ssdeep
-		similarity=`ssdeep -a -x ${DECOMPRESS_TEMP_PATH}/${target_bin}.ssdeep ${DECOMPRESS_TEMP_PATH}/${temp_bin}.ssdeep |head -1|grep -oP '(?<=\()[^\)>]+'`
+		similarity=`ssdeep -s -a -x ${DECOMPRESS_TEMP_PATH}/${target_bin}.ssdeep ${DECOMPRESS_TEMP_PATH}/${temp_bin}.ssdeep  2>>/dev/null |head -1|grep -oP '(?<=\()[^\)>]+'`
 		rm ${DECOMPRESS_TEMP_PATH}/${temp_bin}.ssdeep
-		echo "FirmID:${FirmID} FirmName:${FirmName} BinName:${bin_name_list[i]} Similarity:${similarity}"
+		[ ${similarity}0 -ge ${THRESHOLD}0 ] && echo "${FirmID}:${Manufacturer}:${FirmName}:${bin_name_list[i]}:${similarity}"
 		
 		
 	done
