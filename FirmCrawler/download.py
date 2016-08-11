@@ -14,6 +14,7 @@ sys.setdefaultencoding('utf-8')
 from mycrawler.settings import firmlist_fc, MONGO_URI,dirs_root,MONGO_DATABASE,MONGO_COLLECTION,file_size
 
 import multiprocessing
+file_size = int(file_size)
 
 
 
@@ -54,7 +55,7 @@ def download_url(cur):
     name = cur['FirmwareName']  # 把文件名赋值给name
     mylink = cur['URL']  # 把link赋值给mylink
     firm = cur['Manufacturer']  # 把firm赋值给firmname
-    fileclass = cur["ProductClass"]
+    #fileclass = cur["ProductClass"]
 
     dirs1 = os.path.join(dirs_root, firm)  # 在FIRMWARE下根据厂商名建立新文件夹
     if not os.path.exists(dirs1):
@@ -94,7 +95,7 @@ def download_url(cur):
                 print fsize
                 print "#################################"
                 fsize = int(fsize)
-                if fsize < 100000000:
+                if fsize < file_size:
                     with open(filename, 'wb') as f:
                         print "开始将数据写到文件中"
                         f.write(res.read())
@@ -135,10 +136,12 @@ def download_url(cur):
                         #print "插入完成"
                     break
                 else:
-                    collection.remove({"_id":cur["_id"]})
+                    collection.update({'_id': cur['_id']}, {
+                        "$set": {
 
-
-                    print "remove  success!"
+                            'Status': 4,
+                            }})  # 取时间
+                    print"修改status 4 成功"
             except Exception,e:
                 print e
         except Exception, e:
@@ -173,15 +176,16 @@ def download1():
                     download_url(r_d[-2])
 
             else:
-                if collection.find({'Status': 1}).count() > 0:
+                if collection.find({'Status': 1,'Manufacturer':{"$ne":'Siemens'}}).count() > 0:
                     print "下载状态值为１的"
                     r_d = list(collection.find(
-                        {'Status': 1}))[:7]        #only   siemens
+                        {'Status': 1,'Manufacturer':{"$ne":'Siemens'}}))[:7]
                     if len(r_d) < 7:
                         download_url(r_d[-1])
                     else:
                         for r in r_d[:5]:
                             #print '数量不足七个'
+
                             multiprocessing.Process(
                                 target=download_url, args=(r,)).start()
                         download_url(r_d[-1])
@@ -191,9 +195,12 @@ def download1():
         except Exception, e:
             print e
 
+def remove():
+    collection.remove({"Status":4})
 
 
 
+'''
 def check():
     print "start check status = 0"
     cs = list(collection.find({'Status': 0}))
@@ -213,12 +220,14 @@ def check():
 
 
     print "check end"
+'''
 
 
 
 # time.sleep(300)
-check()
+#check()
 download1()
+remove()
 
 '''
 def download2():

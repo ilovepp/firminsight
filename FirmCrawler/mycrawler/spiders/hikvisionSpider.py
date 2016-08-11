@@ -37,7 +37,7 @@ class DlinkSpider(Spider):
                 from bs4 import BeautifulSoup
 
                 soup = BeautifulSoup(res.read())
-                tb = soup.find_all('table')[-1]
+                tb = soup.find_all('table')[-2]
 
                 return set([urljoin(self.domain, a.attrs.get('href'))
                             for a in tb.find_all('a')[1:]])

@@ -56,8 +56,10 @@ class VipaSpider(Spider):
 
 
                 item["Manufacturer"] = "Vipa"
-                item["URL"] = response.urljoin(
+
+                ttt = response.urljoin(
                     a.xpath("@href").extract().pop())
+                item["URL"]=ttt.replace(" ","%20")
                 #item["Rawlink"] = item["Link"].split("&", 1)[0]
                 item["FirmwareName"] = filename
                 #item["Title"] = item["Filename"]

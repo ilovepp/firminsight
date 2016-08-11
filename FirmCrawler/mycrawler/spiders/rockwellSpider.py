@@ -3,6 +3,7 @@
 from sets import Set
 import re
 import logging
+import time
 
 from scrapy.spiders import Spider
 from selenium import webdriver
@@ -16,6 +17,7 @@ from mycrawler.settings import rockwellpwd,rockwelluser
 
 
 class RockwellSpider(Spider):
+    print "ca1112"
     name = "rockwell"
     #def __init__(self,user = None,pwd = None,*args,**kwargs):
 
@@ -131,6 +133,7 @@ class RockwellSpider(Spider):
         return browser
 
     def parse(self, response):
+        print "ca1111"
         self.pattern = re.compile(".*\(.*,\'(\d*)\'")
         self.prodset = Set()
         self.errmsg = ""
@@ -399,11 +402,12 @@ class RockwellSpider(Spider):
             "//div[@class='multiResults']/table/tbody/tr[@v='" + no + "']")
         key = tr.find_element_by_xpath("td").text
         cnt = 0
+        time.sleep(2)
         self.noTimeoutClick(tr)
         col1 = self.browser.find_element_by_class_name('multiSeriesResults')
         col2 = self.browser.find_element_by_class_name(
             'multiSeriesVersionResults')
-        tableTimeWait = 3
+        tableTimeWait = 8
         try:
             WebDriverWait(self.browser, tableTimeWait).until(
                 lambda x: col1.is_displayed() or col2.is_displayed())
@@ -415,6 +419,7 @@ class RockwellSpider(Spider):
                 cont = self.browser.find_element_by_xpath(
                     "//div[@class='container']/table/tbody/tr/td/img")
             cnt += self.match(cont.get_attribute("onclick"))
+            #time.sleep(2)    #### dai   ce
             self.noTimeoutClick(cont)
             logging.log(logging.INFO, "column[0]")
 
@@ -426,6 +431,7 @@ class RockwellSpider(Spider):
                 t = RockwellSpider.trytimes
                 while i < len(lst1):
                     l = lst1[i]
+                   # time.sleep(2)
                     self.noTimeoutClick(l)
                     try:
                         WebDriverWait(self.browser, tableTimeWait, 0.5, NoSuchElementException).until(
@@ -442,6 +448,8 @@ class RockwellSpider(Spider):
                                 (By.XPATH, "//div[@class='container']/table/tbody/tr/td/img")))
                             if i + 1 == len(lst1):
                                 break
+                            time.sleep(2)
+
                             self.noTimeoutClick(tr)
                             WebDriverWait(self.browser, tableTimeWait, 0.5, NoSuchElementException).until(
                                 lambda x: col1.find_element_by_xpath("table/tbody/tr").is_displayed())

@@ -106,13 +106,13 @@ priority = ["Rockwell"]  # 最高优先级2，把最高优先级的厂商配置�
 import codecs
 import ConfigParser
 config = ConfigParser.ConfigParser()
-globalconfigfile = r'../GLOBAL_CONFIG.config'
+globalconfigfile = r'../GLOBAL_CONFIG'
 config.readfp(codecs.open(globalconfigfile, "r", "utf-8"))
-MONGO_URI = config.get('globalinfo',"MONGO_IP")
-MONGO_DATABASE = config.get('globalinfo',"MONGO_DATABASE")
-MONGO_COLLECTION = config.get('globalinfo',"MONGO_SCRAPY_COLLECTION_NAME")
-dirs_root = config.get('globalinfo',"FIRMWARE_STORE_PATH")
-#file_size = config.get('globalinfo',"")
+MONGO_URI = config.get('globalconfig',"MONGO_IP")
+MONGO_DATABASE = config.get('globalconfig',"MONGO_DATABASE")
+MONGO_COLLECTION = config.get('globalconfig',"MONGO_SCRAPY_COLLECTION_NAME")
+dirs_root = config.get('globalconfig',"FIRMWARE_STORE_PATH")
+#file_size = config.get('globalconfig',"")
 
 configfile = r'./CONFIG.cfg'
 config.readfp(codecs.open(configfile, "r", "utf-8"))

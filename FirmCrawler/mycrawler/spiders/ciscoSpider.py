@@ -121,7 +121,7 @@ class OpenwrtSpider(Spider):
                                         item["ProductModel"]=""
                                         item["Description"]= ""
                                         item["FirmwareName"] = name
-                                        item["Manufacture"] = "Cisco"
+                                        item["Manufacturer"] = "Cisco"
 
 
 
@@ -158,7 +158,7 @@ class OpenwrtSpider(Spider):
                                         if a2:
                                             item["ProductVersion"]= a2.group()
                                         reg = re.compile(r'20[0-1][0-9][0-1][0-9][0-3][0-9]')
-                                        regs = reg.search(item["Name"])
+                                        regs = reg.search(item["FirmwareName"])
                                         if regs !=None:
                                             item["PackedTime"] = regs.group()
 

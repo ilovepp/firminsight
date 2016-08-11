@@ -7,4 +7,6 @@ MONGO_SCRAPY_COLLECTION_NAME=crawls
 FIRMWARE_STORE_PATH=/home/cy/Desktop/test_download
 DECOMPRESS_TEMP_PATH=/tmp
 BINARY_STORE_PATH=/home/cy/Desktop/Binarys
+VUL_BINARY_STORE_PATH=/home/cy/Desktop/VUL
+
 

@@ -25,3 +25,4 @@ class BasicItem(scrapy.Item):
     ProductModel = scrapy.Field()
     ProductVersion = scrapy.Field()
     ProductClass = scrapy.Field()
+    ScrapyTime = scrapy.Field()

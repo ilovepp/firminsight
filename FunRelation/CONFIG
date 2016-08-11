@@ -1,0 +1,11 @@
+[funrelationconfig]
+THRESHOLD=0.0
+IDA_PATH=/home/cy/IDA/idal64
+DB_NAME=test
+BUG_COLLECTION_NAME=BugFeature
+TARGET_COLLECTION_NAME=TargetFeature
+BUG_PLUG_PATH=/home/cy/Desktop/firminsight/FunRelation/FunRelation/BugPlug.py
+TARGET_PLUG_PATH= /home/cy/Desktop/firminsight/FunRelation/FunRelation/TargetPlug.py
+
+
+

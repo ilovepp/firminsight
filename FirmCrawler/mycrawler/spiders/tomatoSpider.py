@@ -56,8 +56,7 @@ class tomatoSpider(Spider):
                             self._loadcomplete)
                     except TimeoutException:
                         pass
-                    lines = browser.find_elements_by_xpath(
-                        "//li")
+                    lines = browser.find_elements_by_xpath( "//li")
                     logging.log(logging.INFO, "Fetch:%s,len:%d", d, len(lines))
                     for l in lines:
                         #a = l.find_element_by_xpath("//li")

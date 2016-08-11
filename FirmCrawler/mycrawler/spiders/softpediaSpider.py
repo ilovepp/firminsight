@@ -59,7 +59,7 @@ class SoftpediaSpider(Spider):
         else:
             url += 'index%d.shtml'
 
-        for i in range(1, 2):
+        for i in range(1, 37):#####2
 
             trytime = 5
             while trytime > 0:
@@ -166,30 +166,8 @@ class SoftpediaSpider(Spider):
                 #item["Rawlink"] = item["Link"]
                 item["FirmwareName"] = durl.split('/')[-1]
                 #item["Title"] = item["Filename"]
-                item["PublishTime"] = Published_time
-                a = item["PublishTime"]
-
-                try:
-                    a1 = a.split(",")[0]
-                    a2 = a.split(",")[1]
-                    regg = ".+[1-9]+"
-                    a3 = re.match(regg,a1).group()
-                    a = a3 + "," + a2
-                    a = a.strip()
-
-                except Exception,e:
-                    print e
-
-
-
-                try:
-                    array=time.strptime(a,u"%B %d, %Y")
-                    item["PublishTime"] = time.strftime("%Y-%m-%d",array)
-                except Exception, e:
-                    #print"**********************format errror***********************"
-                    print e
-                    #print "************ss"
-
+                #item["PublishTime"] = Published_time
+                #a = item["PublishTime"]
 
                 #item["Info"] = {}
                 item["ProductVersion"]=""

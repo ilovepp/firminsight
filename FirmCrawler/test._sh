@@ -1,0 +1,10 @@
+#!/bin/bash
+
+for crawl in `ls mycrawler/spiders|grep py$|grep -v "__init__"`
+do
+	echo "${crawl%S*} start"
+	date >>${crawl%S*}.log
+	scrapy crawl ${crawl%S*}  >>${crawl%S*}.log 2>&1
+	date >>${crawl%S*}.log
+	echo "${crawl%S*} finish"
+done

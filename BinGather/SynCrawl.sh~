@@ -1,0 +1,30 @@
+#!/bin/bash
+eval `tail -n +2 ../GLOBAL_CONFIG`
+
+function mongocmd(){
+	echo "`echo $1|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null`"
+}
+firmnum="`mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.count()"|tail -1`"
+echo $firmnum
+exit
+
+
+
+
+
+mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.count();"
+firmnum=$(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|tail -1)
+
+((firmnum--))
+for index in `seq 0 $firmnum`
+do
+	
+	mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.find({},{FirmName:1,_id:0}).limit(1).skip(${index}).toArray();"
+	mongo_return=$(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|grep FirmName)
+	FirmName=$(echo $mongo_return|awk -F\" '{print $4}')
+	echo "$index:$FirmName"
+	mongo_cmd="db.${MONGO_SCRAPY_COLLECTION_NAME}.find({FirmwareName:\"$FirmName\"}).toArray();"
+done
+
+type "help" for help [ { "_id" : ObjectId("57a8966ef989bb3e317d0960"), "Manufacturer" : "Vipa", "URL" : "http://www.vipa.com/fileadmin/servicearea/firmware/System%20200V/CPU/215/Archiv/V408/215-2BM02_a2.408", "Status" : 1, "PackedTime" : "", "Description" : "System 200V / CPU / 215 / Archiv / ..", "ProductModel" : "System 200V ", "ScrapyTime" : "2016-08-08 22:25:50", "ProductVersion" : "a2.408", "ProductClass" : "Controlsystem", "FirmwareName" : "215-2BM02_a2.408" } ]
+340:CPU_115-6BL12_a1_V413.zip

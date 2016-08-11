@@ -1,0 +1,2 @@
+type "help" for help [ { "_id" : ObjectId("57a8966ef989bb3e317d0960"), "Manufacturer" : "Vipa", "URL" : "http://www.vipa.com/fileadmin/servicearea/firmware/System%20200V/CPU/215/Archiv/V408/215-2BM02_a2.408", "Status" : 1, "PackedTime" : "", "Description" : "System 200V / CPU / 215 / Archiv / ..", "ProductModel" : "System 200V ", "ScrapyTime" : "2016-08-08 22:25:50", "ProductVersion" : "a2.408", "ProductClass" : "Controlsystem", "FirmwareName" : "215-2BM02_a2.408" } ]
+340:CPU_115-6BL12_a1_V413.zip

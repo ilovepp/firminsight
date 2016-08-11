@@ -14,6 +14,7 @@ from selenium.common.exceptions import *
 import logging
 import multiprocessing
 import codecs
+import hashlib
 reload(sys)
 sys.setdefaultencoding('utf-8')
 from mycrawler.settings import firmlist_fc, MONGO_URI,MONGO_COLLECTION,MONGO_DATABASE,file_size,dirs_root
@@ -22,7 +23,7 @@ from mycrawler.settings import firmlist_fc, MONGO_URI,MONGO_COLLECTION,MONGO_DAT
 import ConfigParser
 config = ConfigParser.ConfigParser()
 configfile = r'./CONFIG.cfg'
-globalconfigfile = r'../GLOBAL_CONFIG.config'
+globalconfigfile = r'../GLOBAL_CONFIG'
 config.readfp(codecs.open(configfile, "r", "utf-8"))
 config.readfp(codecs.open(globalconfigfile, "r", "utf-8"))
 
@@ -76,6 +77,7 @@ dir1 = os.path.join(dirs_root,firm)
 
 
 
+
 if not os.path.exists(dir1):
 
     os.makedirs(dir1)
@@ -100,6 +102,11 @@ if collection.find({"Manufacturer":"Siemens","Status":1}).count()>0:
 
 
         link = cur["URL"]
+        m = hashlib.md5()
+        m.update(link)
+        a = m.hexdigest()
+
+
         req = urllib2.Request(link,headers = headers1)
         req.add_header('User-Agent','Mozilla/5.0 (X11; Linux x86_64; rv:35.0) Gecko/20100101 Firefox/35.0')
         print req.get_header('User-agent')
@@ -109,7 +116,10 @@ if collection.find({"Manufacturer":"Siemens","Status":1}).count()>0:
 
         print " try "
         name = cur["FirmwareName"]
-        filename = os.path.join(dir1,name)
+
+        name1 = a + name
+        filename = os.path.join(dir1, name1)  # 定义文件的绝对路径
+
         print filename
 
         if cur.has_key("Path") and cur["Path"] == filename:

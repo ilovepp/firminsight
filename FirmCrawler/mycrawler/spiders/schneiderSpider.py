@@ -2,6 +2,7 @@
 
 from sets import Set
 
+
 from scrapy.spiders import Spider
 from selenium import webdriver
 from selenium.common.exceptions import *
@@ -20,7 +21,7 @@ class SchneiderSpider(Spider):
         "http://www.schneider-electric.com/download/ww/en/results/3541958-SoftwareFirmware/1555893-Firmware--Released/?showAsIframe=false",
         "http://www.schneider-electric.com/download/ww/en/results/3541958-SoftwareFirmware/1555902-Firmware--Updates/?showAsIframe=false",
     ]
-    timeout = 5
+    timeout = 15
     trytimes = 3
 
     # must be lower character
@@ -87,11 +88,15 @@ class SchneiderSpider(Spider):
         files = Set()
         for link in links:
             t = SchneiderSpider.trytimes
+
+
             while True:
                 nbrowser = webdriver.Firefox()
                 try:
-                    nbrowser = webdriver.Firefox()
+                    if not nbrowser:
+                        nbrowser = webdriver.Firefox()
                     yield self.parse_page(link, nbrowser)
+
                 except WebDriverException, e:
                     t -= 1
                     nbrowser.quit()
@@ -100,6 +105,10 @@ class SchneiderSpider(Spider):
                 else:
                     nbrowser.quit()
                     break
+
+
+
+
         browser.quit()
         # return files
 
@@ -121,11 +130,11 @@ class SchneiderSpider(Spider):
         #item["Title"] = scope.find_element_by_xpath("//h1").text
         item["Manufacturer"] = "Schneider"
         #item["Info"] = {}
-        item["ProducVersion"]=""
-        item["packedTime"]=""
-        item["ProducClass"]=""
+        item["ProductVersion"]=""
+        item["PackedTime"]=""
+        item["ProductClass"]=""
         #item["Info"]["Size"]=""
-        item["ProducModel"]=""
+        item["ProductModel"]=""
         item["Description"]=""
 
 
@@ -134,7 +143,7 @@ class SchneiderSpider(Spider):
         In_ethernet = ['tcs']
         Motor = ['MLD','LXM','LMC','Tes']
         Scada = ['Sca','TRS']
-        item["ProducClass"] = "Other"
+        item["ProductClass"] = "Other"
 
 
 
@@ -151,7 +160,7 @@ class SchneiderSpider(Spider):
             if key == "Description":
                 item["Description"] = label_contents[i].text
             elif key == "Date":
-                item["packedTime"] =""          #label_contents[i].text
+                item["PackedTime"] =""          #label_contents[i].text
                 item["PublishTime"] = label_contents[i].text
 
                 a = item["PublishTime"]
@@ -173,30 +182,30 @@ class SchneiderSpider(Spider):
                 item["FirmwareName"] = l.text
 
                 try:
-                    item["ProducModel"] = l.text.split("_")[0]
-                    item["ProducVersion"] = ""#l.text.split("_")[-1]
+                    item["ProductModel"] = l.text.split("_")[0]
+                    item["ProductVersion"] = ""#l.text.split("_")[-1]
                     a = l.text
                     a2 = a.split(".")
                     a3 = a.replace("." + a2[-1],"")
                     a4 = a3.split("_")[0]
                     a5 = a4.split("-")[0]
-                    item["ProducModel"] = a5
+                    item["ProductModel"] = a5
 
                     if a5 == "S":
-                        item["ProducModel"] = a5 + a3.split("_")[1]
+                        item["ProductModel"] = a5 + a3.split("_")[1]
                     elif a5 == "FW":
-                        item["ProducModel"] =  a3.split("_")[1]
+                        item["ProductModel"] =  a3.split("_")[1]
                     elif a5 == "Text":
-                        item["ProducModel"] = a4.split("-")[1]
+                        item["ProductModel"] = a4.split("-")[1]
                     elif a5 == "Firmware":
-                        item["ProducModel"] =  a4.split("-")[1]
+                        item["ProductModel"] =  a4.split("-")[1]
                     elif a5 == "upgrade":
-                        item["ProducModel"] = a4.split("-")[1]
+                        item["ProductModel"] = a4.split("-")[1]
 
                     s1 = re.compile(r"(V|v)[1-9]\.")
                     s2 = s1.match(a5)
                     if s2:
-                        item["ProducModel"] = ""
+                        item["ProductModel"] = ""
 
 
 
@@ -204,12 +213,12 @@ class SchneiderSpider(Spider):
                     patt = re.compile(r'((v|V)([0-9]+\.*(lie[0-9]+)*\.*([0-9]+)*)\.*([0-9]+)*\.*([0-9]+)*)|([0-9]+\.([0-9]+)\.*([0-9]+)*\.*([0-9]+)*\.*([0-9]+)*)')
                     ma = patt.search(a3)
                     if ma:
-                        item["ProducVersion"] = ma.group()
+                        item["ProductVersion"] = ma.group()
 
 
                     try:
-                        a = item["ProducModel"][0] + item["ProducModel"][1] + item["ProducModel"][2]
-                        if a == 'Con' and item["ProducModel"][3] == 'n':
+                        a = item["ProductModel"][0] + item["ProductModel"][1] + item["ProductModel"][2]
+                        if a == 'Con' and item["ProductModel"][3] == 'n':
                             item["ProducClass"]= "In_ethernet"
                         elif a in Energy:
                             item["ProducClass"]= "Energy"

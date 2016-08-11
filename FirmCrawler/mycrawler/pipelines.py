@@ -5,6 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 import pymongo
+import time
 
 from settings import priority
 
@@ -49,6 +50,10 @@ class MongoPipeline(object):
             item["Status"] = 1
         # mymd5 = md5.new(item["Rawlink"].encode("utf8"))
         # item["id"] = mymd5.hexdigest()
+        format = "%Y-%m-%d %H:%M:%S"
+        item["ScrapyTime"] = time.strftime(format,time.localtime())
+
+
 
         # 检查该连接是否已经存在于数据库
         if item["Status"] == 1:

@@ -1,0 +1,127 @@
+2016年 07月 27日 星期三 12:59:07 CST
+2016-07-27 12:59:07 [scrapy] INFO: Scrapy 1.1.0 started (bot: mycrawler)
+2016-07-27 12:59:07 [scrapy] INFO: Overridden settings: {'NEWSPIDER_MODULE': 'mycrawler.spiders', 'SPIDER_MODULES': ['mycrawler.spiders'], 'BOT_NAME': 'mycrawler'}
+2016-07-27 12:59:07 [scrapy] INFO: Enabled extensions:
+['scrapy.extensions.logstats.LogStats',
+ 'scrapy.extensions.telnet.TelnetConsole',
+ 'scrapy.extensions.corestats.CoreStats']
+2016-07-27 12:59:07 [scrapy] INFO: Enabled downloader middlewares:
+['scrapy.downloadermiddlewares.httpauth.HttpAuthMiddleware',
+ 'scrapy.downloadermiddlewares.downloadtimeout.DownloadTimeoutMiddleware',
+ 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware',
+ 'scrapy.downloadermiddlewares.retry.RetryMiddleware',
+ 'scrapy.downloadermiddlewares.defaultheaders.DefaultHeadersMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.MetaRefreshMiddleware',
+ 'scrapy.downloadermiddlewares.httpcompression.HttpCompressionMiddleware',
+ 'scrapy.downloadermiddlewares.redirect.RedirectMiddleware',
+ 'scrapy.downloadermiddlewares.cookies.CookiesMiddleware',
+ 'scrapy.downloadermiddlewares.chunked.ChunkedTransferMiddleware',
+ 'scrapy.downloadermiddlewares.stats.DownloaderStats']
+2016-07-27 12:59:07 [scrapy] INFO: Enabled spider middlewares:
+['scrapy.spidermiddlewares.httperror.HttpErrorMiddleware',
+ 'scrapy.spidermiddlewares.offsite.OffsiteMiddleware',
+ 'scrapy.spidermiddlewares.referer.RefererMiddleware',
+ 'scrapy.spidermiddlewares.urllength.UrlLengthMiddleware',
+ 'scrapy.spidermiddlewares.depth.DepthMiddleware']
+2016-07-27 12:59:07 [scrapy] INFO: Enabled item pipelines:
+['mycrawler.pipelines.MongoPipeline']
+2016-07-27 12:59:07 [scrapy] INFO: Spider opened
+2016-07-27 12:59:07 [scrapy] INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
+2016-07-27 12:59:07 [scrapy] DEBUG: Telnet console listening on 127.0.0.1:6023
+2016-07-27 12:59:08 [scrapy] DEBUG: Crawled (200) <GET http://compatibility.rockwellautomation.com/Pages/MultiProductDownload.aspx?keyword=Controller> (referer: None)
+2016-07-27 12:59:12 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session {"requiredCapabilities": {}, "desiredCapabilities": {"binary": "/usr/bin/firefox", "javascriptEnabled": true, "firefox_profile": "UEsDBBQAAAAIAGRn+0i6C19U6QMAAKIOAAAHAAAAdXNlci5qc51XwW7jNhC99ysWOXWBmkg23Ut7SrMpUGCxKdYI9khQ1MhiTJFccmjFf98hZSF2LFFOb5bMIWfevPc4igE8dx6aX69qgcKDsx6V2TBntZJ7ll6uY9WpEJQ1/+aXd1KCQ6ivfvvQCB3g45+/xKNtbMc68cJl620HPEivHHIfDUfVAcXcXp8G9FDVXu3oGYyoNHAjkB457MBgoAD08c0ZaK3eKmQGsLd+2wkjNuBZrULaYDIkgIxe4Z71whu+U9BTlbxTL1Cz0NqeWyNhuqJnsRNDGcw6JBhCjvjH3NNPO3MevCCYkBdHRygCG6qbQe00PSocfMqvB7GdDqi87emJPTx9vWO3TLz25DwX4dxFSYywImjoAP2eeXgGObftmEIA4WV7OKGcbRAN5N+JYp3QVO1CTocWsxbRJV6tpDWGckrIrhz4FS0l7lDwzXUJUg1ilxDNb2Gp5adaaEFobIdnls5TElijfMDv0Uxv8EpqEUIkHURDAAaCkpOUYk64gCidjtExR7Smhe8o7AKyWMrKq3qatuNKFFXI+z+aRwczRb4SILtDQEvIesj1NqR+Lr0I7XTsuT6MRdXsn0LGpiQRGdyBM+W0khORymvbszp27ohnRbnKFuT23naObKhSOp1o1KZFvV9A4dC0lmzv0LgrUdmIf1RamO3VdJSm0j25Y1kFo6kuu+nbLMhCtExGHL0uZ1TDLhlAYJSP9XLwtiJoBU8tQ2WbRisz075SBUzUtUraFwvFnNiGa1Vo96v0tyM5rjSYDSZefvr8edbqS4U7IrfDkFTCO1sLvdC9eTfRdrNJLw9wP5S2mTTR4sEvTpEqhdYsqA1dq2QQgQT6Myq/eEgLFJa18AUaETX+NfzzrvurZErnt807L6ehC3n9pzkH6I22ombjhJBs/0cLZp04RgnOq+0wS3BL7sfrmKtJW5VRI1ZvWQ5JhuIHms4kZ6An/iSG/2/2jHfRZaNFozTQLzIqryRy6xVRjw+DXrksD6JOcALmaeDvdPXdUT5yefiptJVbrQJeds0PjVodDGJF5MUY3o1LdKlVRTEdpThqsKT4oxFKRLQzSJPIrCG0Ougq8Ov8OJN9YeBbGk7OyUZUGi66c7Yd1ZkS/zLQei0pLkwMTafkZIuXRlH3i1MW6WzoGCeP4s+BVJPGWDWgdt6FVz/rW0VGkGhVtrOjOSxPyEdzmAQ/83kxMQTdaxvm7qsTCEL6WEJOeRas74JPrSJ5R3kQK6mtWhPK1Z7Xg0+Xr+rRBN6q/3ZutNNNiG5Q1UCGmUGGXtWP5kemYbi5ZoqAtk/fv142BpHdOi32UD/cXK+/0SSYOfM7Lf4PUEsBAhQDFAAAAAgAZGf7SLoLX1TpAwAAog4AAAcAAAAAAAAAAAAAALSBAAAAAHVzZXIuanNQSwUGAAAAAAEAAQA1AAAADgQAAAAA", "args": [], "platform": "ANY", "browserName": "firefox", "version": "", "marionette": false}}
+2016-07-27 12:59:12 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:12 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/timeouts {"sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "type": "page load", "ms": 7000.0}
+2016-07-27 12:59:12 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:12 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/timeouts/implicit_wait {"sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "ms": 5000.0}
+2016-07-27 12:59:12 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:12 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/url {"url": "http://compatibility.rockwellautomation.com/Pages/MultiProductDownload.aspx?keyword=Controller", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a"}
+2016-07-27 12:59:19 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:19 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "id", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "regname"}
+2016-07-27 12:59:24 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:24 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "id", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "regname"}
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: GET http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element/{887e8e3e-58b0-4d54-a394-967f78d5e33c}/text {"sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "id": "{887e8e3e-58b0-4d54-a394-967f78d5e33c}"}
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "id", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "reglinks"}
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element/{c43ce218-9c16-4ac4-8d87-e305f47f07d0}/element {"using": "xpath", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "id": "{c43ce218-9c16-4ac4-8d87-e305f47f07d0}", "value": "a"}
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element/{d35ba930-531d-480a-8ed5-5bb7188594bf}/click {"sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "id": "{d35ba930-531d-480a-8ed5-5bb7188594bf}"}
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:26 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "xpath", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "//input[@name='userName']"}
+2016-07-27 12:59:31 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:32 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "xpath", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "//input[@name='userName']"}
+2016-07-27 12:59:37 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:37 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "xpath", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "//input[@name='userName']"}
+2016-07-27 12:59:42 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:43 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/url {"url": "http://compatibility.rockwellautomation.com/Pages/MultiProductDownload.aspx?keyword=Controller", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a"}
+2016-07-27 12:59:43 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:43 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "id", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "regname"}
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: GET http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element/{b851b549-c4d4-4293-ac6c-b242a83234f5}/text {"sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "id": "{b851b549-c4d4-4293-ac6c-b242a83234f5}"}
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "id", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "reglinks"}
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element/{6130d2c4-e7bb-43b4-83b9-25fa61a8e9b6}/element {"using": "xpath", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "id": "{6130d2c4-e7bb-43b4-83b9-25fa61a8e9b6}", "value": "a"}
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element/{be57f038-f4a6-44f4-8d81-f26c212da44f}/click {"sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "id": "{be57f038-f4a6-44f4-8d81-f26c212da44f}"}
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: Finished Request
+2016-07-27 12:59:59 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/element {"using": "xpath", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a", "value": "//input[@name='userName']"}
+2016-07-27 16:50:33 [selenium.webdriver.remote.remote_connection] DEBUG: POST http://127.0.0.1:48833/hub/session/a7335095-3961-4ad6-8051-566a5a24d51a/url {"url": "http://compatibility.rockwellautomation.com/Pages/MultiProductDownload.aspx?keyword=Controller", "sessionId": "a7335095-3961-4ad6-8051-566a5a24d51a"}
+2016-07-27 16:50:33 [scrapy] ERROR: Spider error processing <GET http://compatibility.rockwellautomation.com/Pages/MultiProductDownload.aspx?keyword=Controller> (referer: None)
+Traceback (most recent call last):
+  File "/usr/local/lib/python2.7/dist-packages/twisted/internet/defer.py", line 588, in _runCallbacks
+    current.result = callback(current.result, *args, **kw)
+  File "/home/zww/workFile/firminsight/FirmCrawler/mycrawler/spiders/rockwellSpider.py", line 144, in parse
+    if not self.loadpage(response.url):
+  File "/home/zww/workFile/firminsight/FirmCrawler/mycrawler/spiders/rockwellSpider.py", line 80, in loadpage
+    self.browser.get(url)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 248, in get
+    self.execute(Command.GET, {'url': url})
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/webdriver.py", line 234, in execute
+    response = self.command_executor.execute(driver_command, params)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/remote_connection.py", line 401, in execute
+    return self._request(command_info[0], url, body=data)
+  File "/usr/local/lib/python2.7/dist-packages/selenium/webdriver/remote/remote_connection.py", line 432, in _request
+    self._conn.request(method, parsed_url.path, body, headers)
+  File "/usr/lib/python2.7/httplib.py", line 979, in request
+    self._send_request(method, url, body, headers)
+  File "/usr/lib/python2.7/httplib.py", line 1013, in _send_request
+    self.endheaders(body)
+  File "/usr/lib/python2.7/httplib.py", line 975, in endheaders
+    self._send_output(message_body)
+  File "/usr/lib/python2.7/httplib.py", line 835, in _send_output
+    self.send(msg)
+  File "/usr/lib/python2.7/httplib.py", line 797, in send
+    self.connect()
+  File "/usr/lib/python2.7/httplib.py", line 778, in connect
+    self.timeout, self.source_address)
+  File "/usr/lib/python2.7/socket.py", line 571, in create_connection
+    raise err
+error: [Errno 111] Connection refused
+2016-07-27 16:50:33 [scrapy] INFO: Crawled 1 pages (at 1 pages/min), scraped 0 items (at 0 items/min)
+2016-07-27 16:50:33 [scrapy] INFO: Closing spider (finished)
+2016-07-27 16:50:33 [scrapy] INFO: Dumping Scrapy stats:
+{'downloader/request_bytes': 284,
+ 'downloader/request_count': 1,
+ 'downloader/request_method_count/GET': 1,
+ 'downloader/response_bytes': 16755,
+ 'downloader/response_count': 1,
+ 'downloader/response_status_count/200': 1,
+ 'finish_reason': 'finished',
+ 'finish_time': datetime.datetime(2016, 7, 27, 8, 50, 33, 935818),
+ 'log_count/DEBUG': 42,
+ 'log_count/ERROR': 1,
+ 'log_count/INFO': 8,
+ 'response_received_count': 1,
+ 'scheduler/dequeued': 1,
+ 'scheduler/dequeued/memory': 1,
+ 'scheduler/enqueued': 1,
+ 'scheduler/enqueued/memory': 1,
+ 'spider_exceptions/error': 1,
+ 'start_time': datetime.datetime(2016, 7, 27, 4, 59, 7, 423378)}
+2016-07-27 16:50:33 [scrapy] INFO: Spider closed (finished)
+ca1112
+ca1111
+2016年 07月 27日 星期三 16:50:34 CST
