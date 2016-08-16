@@ -4,9 +4,10 @@ MONGO_PORT=27017
 MONGO_DATABASE=firminsight
 MONGO_FIRM_COLLECTION_NAME=firmwares
 MONGO_SCRAPY_COLLECTION_NAME=crawls
-FIRMWARE_STORE_PATH=/home/cy/Desktop/test_download
+MONGO_VUL_COLLECTION_NAME=vuls
+FIRMWARE_STORE_PATH=/home/cy/Desktop/Router
 DECOMPRESS_TEMP_PATH=/tmp
 BINARY_STORE_PATH=/home/cy/Desktop/Binarys
-VUL_BINARY_STORE_PATH=/home/cy/Desktop/VUL
+VUL_BINARY_STORE_PATH=/home/cy/Desktop/VulBinarys
 
 

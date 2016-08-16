@@ -1,7 +1,7 @@
 [bingatherconfig]
 ITERATIVE_DEPPTH=10
 DECOMPRESS_TIMEOUT=45
-EXTENSION_BLACKLIST=(7z zlib cramfs msi exe zip eds ico pkg)
+EXTENSION_BLACKLIST=(7z zlib cramfs msi exe zip eds ico pkg txt png css html htm gif)
 EXTENSION_WHITELIST=(hex)
 FILE_RETURN_BLACKLIST=(empty document text image archive compressed Squashfs)
 FILE_RETURN_WHITELIST=(ELF)
