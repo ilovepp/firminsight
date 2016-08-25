@@ -26,6 +26,42 @@ BinName="${1##*/}"
 BinMD5=$(md5sum "$1"|awk '{print $1}')	
 [ `mongocmd "db.${MONGO_VUL_COLLECTION_NAME}.findOne({BinMD5:\"${BinMD5}\"});"|tail -1` != "null" ] && echo "${BinName} has already in database" && exit 1
 
+
+BinInstSet="unknown"
+../BinGather/isdetect.py "$1" >>/dev/null
+case $? in
+	0) BinInstSet="unknown";;			
+	1) BinInstSet="MIPS-Little";;
+	2) BinInstSet="MIPS-Big";;
+	3) BinInstSet="ARM-Little";;
+	4) BinInstSet="ARM-Big";;
+	5) BinInstSet="PowerPC-Big";;
+	6) BinInstSet="PowerPC-Little";;
+esac		
+
+if [ "$BinInstSet" = "unknown" ] && [ -n "`file "$1"|grep ELF`" ];then
+	temp=0
+	if [ -n "`file "$1"|grep MIPS`" ];then
+		temp=1
+		[ -n "`file "$1"|grep MSB`" ] && temp=2
+	elif [ -n "`file "$1"|grep ARM`" ];then
+		temp=3
+    	[ -n "`file "$1"|grep MSB`" ] && temp=4
+	elif [ -n "`file "$1"|grep -E "ppc|PowerPC"`" ];then
+		temp=5
+		[ -n "`file "$1"|grep LSB`" ] && temp=6
+    fi
+    case $temp in
+        0) BinInstSet="unknown";;			
+	    1) BinInstSet="MIPS-Little";;
+	    2) BinInstSet="MIPS-Big";;
+	    3) BinInstSet="ARM-Little";;
+	    4) BinInstSet="ARM-Big";;
+	    5) BinInstSet="PowerPC-Big";;
+	    6) BinInstSet="PowerPC-Little";;
+    esac
+fi
+echo $BinInstSet
 ((VulID++))
 mongocmd "db.${MONGO_VUL_COLLECTION_NAME}.insert({VulID:${VulID},BinName:\"${BinName}\",BinMD5:\"${BinMD5}\"})"
 ((fileid++))
@@ -41,6 +77,7 @@ do
 done
 IFS="$OLD_IFS"
 
+mongo_update $BinMD5 BinInstSet $BinInstSet
 
 
 
