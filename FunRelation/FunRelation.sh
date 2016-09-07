@@ -58,12 +58,12 @@ python Core/bugSearch.py $DECOMPRESS_TEMP_PATH/search.i64 $VUL_BINARY_STORE_PATH
 
 rm $DECOMPRESS_TEMP_PATH/search.* 
 
-[ ! -s  result.json -o `cat result.json` = "{}" ] && echo "no matched function" && exit
+[ ! -s  result.json -o "`cat result.json`" = "{}" ] && echo "no matched function" && exit
 
 cat result.json
 Time=`date`
 Result=`cat result.json|sed "s/\"//g"`
 mongocmd "db.${MONGO_RELATION_COLLECTION_NAME}.insert({VulID:${vul_id},FirmID:${search_firm_id},FirmName:\"${search_firm_name}\",BinName:\"${search_save_bin}\",BinMD5:\"${BinMD5}\",Time:\"${Time}\",Result:\"${Result}\"});"
 
-#./FunRelation.sh 1917 31F 5
-#./FunRelation.sh 4615 cgibin 3
+#./FunRelation.sh 1671 vxWorks_bmx1000.bin 7
+./FunRelation.sh 1628 1 6

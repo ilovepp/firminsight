@@ -1,10 +1,10 @@
 #!/bin/bash
 
-for crawl in `ls mycrawler/spiders`
+for crawl in `ls mycrawler/spiders|grep py$|grep -v "__init__"`
 do
-	echo $crawl|grep py$|grep -v "__init__"
-done 
+	scrapy crawl ${crawl%S*}  
+done
 
-
-
+python siemensdownload.py 
+python download.py
 

@@ -5,5 +5,5 @@ EXTENSION_BLACKLIST=(7z zlib cramfs msi exe zip eds ico pkg txt png css html htm
 EXTENSION_WHITELIST=(hex)
 FILE_RETURN_BLACKLIST=(empty document text image archive compressed Squashfs)
 FILE_RETURN_WHITELIST=(ELF)
-INSTRUCTION_SET_DETECT_METHOD_SELECT=0 # 0:use inst detect arithmetic  1:use elf header 
+INSTRUCTION_SET_DETECT_METHOD_SELECT=1 # 0:use inst detect arithmetic  1:use elf header 
 

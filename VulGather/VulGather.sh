@@ -63,6 +63,7 @@ if [ "$BinInstSet" = "unknown" ] && [ -n "`file "$1"|grep ELF`" ];then
 fi
 echo $BinInstSet
 ((VulID++))
+VulID=3
 mongocmd "db.${MONGO_VUL_COLLECTION_NAME}.insert({VulID:${VulID},BinName:\"${BinName}\",BinMD5:\"${BinMD5}\"})"
 ((fileid++))
 cp "$1"  ${VUL_BINARY_STORE_PATH}/${fileid}_${BinName}
