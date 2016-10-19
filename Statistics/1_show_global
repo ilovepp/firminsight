@@ -5,19 +5,19 @@ function mongocmd(){
     echo "`echo $1|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null`"
 }
 
-mongocmd "DBQuery.shellBatchSize=50;db.${MONGO_FIRM_COLLECTION_NAME}.aggregate([ {\$match:{BinFileCount:{\$gt:0}}} , {\$group:{_id:\"\$Manufacturer\",firm_num:{\$sum:1},bin_num:{\$sum:\"\$BinFileCount\"}}} ])"
+mongocmd "DBQuery.shellBatchSize=50;db.${MONGO_FIRM_COLLECTION_NAME}.aggregate([ {\$match:{binFileCount:{\$gt:0}}} , {\$group:{_id:\"\$manufacturer\",firm_num:{\$sum:1},bin_num:{\$sum:\"\$binFileCount\"}}} ])"
 echo "----------------------------"
 echo -n "total firmares:"
 mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.count()"|tail -1
 echo -n "decode suscess:"
-mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.find({BinFileCount:{\$gt:0}}).count()"|tail -1
+mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.find({binFileCount:{\$gt:0}}).count()"|tail -1
 echo -n "total binary:"
-mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.aggregate([ {\$match:{BinFileCount:{\$gt:0}}} ,{\$group:{_id:\"\",total:{\$sum:\"\$BinFileCount\"}}} ])"|tail -1|awk '{print $7}'
+mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.aggregate([ {\$match:{binFileCount:{\$gt:0}}} ,{\$group:{_id:\"\",total:{\$sum:\"\$binFileCount\"}}} ])"|tail -1|awk '{print $7}'
 echo "----------------------------"
 echo -n "ICS total firmares:"
-mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.count({\$or:[{Manufacturer:\"Abb\"},{Manufacturer:\"Rockwell\"},{Manufacturer:\"Siemens\"},{Manufacturer:\"Schneider\"},{Manufacturer:\"Vipa\"}]})"|tail -1
+mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.count({\$or:[{manufacturer:\"Abb\"},{manufacturer:\"Rockwell\"},{manufacturer:\"Siemens\"},{manufacturer:\"Schneider\"},{manufacturer:\"Vipa\"}]})"|tail -1
 echo -n "ICS decode suscess:"
-mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.find({\$or:[{Manufacturer:\"Abb\"},{Manufacturer:\"Rockwell\"},{Manufacturer:\"Siemens\"},{Manufacturer:\"Schneider\"},{Manufacturer:\"Vipa\"}],BinFileCount:{\$gt:0}}).count()"|tail -1
+mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.find({\$or:[{manufacturer:\"Abb\"},{manufacturer:\"Rockwell\"},{manufacturer:\"Siemens\"},{manufacturer:\"Schneider\"},{manufacturer:\"Vipa\"}],binFileCount:{\$gt:0}}).count()"|tail -1
 echo -n "ICS total binary:"
-mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.aggregate([ {\$match:{\$or:[{Manufacturer:\"Abb\"},{Manufacturer:\"Rockwell\"},{Manufacturer:\"Siemens\"},{Manufacturer:\"Schneider\"},{Manufacturer:\"Vipa\"}]}} ,{\$group:{_id:\"\",total:{\$sum:\"\$BinFileCount\"}}} ])"|tail -1|awk '{print $7}'
+mongocmd "db.${MONGO_FIRM_COLLECTION_NAME}.aggregate([ {\$match:{\$or:[{manufacturer:\"Abb\"},{manufacturer:\"Rockwell\"},{manufacturer:\"Siemens\"},{manufacturer:\"Schneider\"},{manufacturer:\"Vipa\"}]}} ,{\$group:{_id:\"\",total:{\$sum:\"\$binFileCount\"}}} ])"|tail -1|awk '{print $7}'
 echo "----------------------------"

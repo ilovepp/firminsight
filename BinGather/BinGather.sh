@@ -28,7 +28,7 @@ ExtensionWhitelist=`echo "${EXTENSION_WHITELIST[@]}"|sed "s/ /|/g"`
 FileReturnWhitelist=`echo "${FILE_RETURN_WHITELIST[@]}"|sed "s/ /|/g"`
 
 
-ManufacturerPathPos=`echo $FIRMWARE_STORE_PATH|awk -F/ '{print NF+1}'`
+manufacturerPathPos=`echo $FIRMWARE_STORE_PATH|awk -F/ '{print NF+1}'`
 IFS=$(echo -e "\n\b")
 
 UNIX_DIRS=(bin etc dev home lib mnt opt root run sbin tmp usr var)
@@ -56,41 +56,41 @@ IFS=" "
 plugins=("`ls Plugin`")
 IFS="$OLD_IFS"
 
-mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.find({},{FirmID:1,_id:0}).sort({FirmID:-1}).limit(1);"
-FirmID=$(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|awk '{print $4}'|tail -1)
+mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.find({},{firmID:1,_id:0}).sort({firmID:-1}).limit(1);"
+firmID=$(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|awk '{print $4}'|tail -1)
 
 function mongo_update(){
-    mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmName:\"$1\"},{\$set:{$2:\"$3\"}});"
+    mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmName:\"$1\"},{\$set:{$2:\"$3\"}});"
     #echo $mongo_cmd
     echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1			
 }
 
-function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle arg4:discrition
-    FirmPath="$1"
-    [ ! -f "$FirmPath" ] && return
-	FirmMD5=$(md5sum "$FirmPath"|awk '{print $1}')	
-	mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.findOne({FirmMD5:\"${FirmMD5}\"});"
-	[ $(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|tail -1) != "null" ] && echo "${FirmPath} has already in database" && return 
+function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle arg5:discrition
+    firmPath="$1"
+    [ ! -f "$firmPath" ] && return
+	firmMD5=$(md5sum "$firmPath"|awk '{print $1}')	
+	mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.findOne({firmMD5:\"${firmMD5}\"});"
+	[ $(echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell 2>/dev/null|tail -1) != "null" ] && echo "${firmPath} has already in database" && return 
 
-	((FirmID++))
-	FirmName="${FirmPath##*/}"
+	((firmID++))
+	firmName="${firmPath##*/}"
     if [ -z "$2" ];then
-	    Manufacturer=$(echo "$FirmPath"|cut -d "/" -f $ManufacturerPathPos)
+	    manufacturer=$(echo "$firmPath"|cut -d "/" -f $manufacturerPathPos)
     else
-        Manufacturer="$2"
+        manufacturer="$2"
     fi
-	FirmSize=$(ls -l "$FirmPath"|awk '{print $5}')
-    ProcessTime=`date`
-    mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.insert({FirmID:${FirmID},FirmName:\"${FirmName}\",Manufacturer:\"${Manufacturer}\",FirmSize:${FirmSize},FirmMD5:\"${FirmMD5}\",FirmPath:\"${FirmPath}\",ProcessTime:\"${ProcessTime}\",OS:[],InstuctionSet:[],BinFileCount:0,BinFiles:[]});"
+	firmSize=$(ls -l "$firmPath"|awk '{print $5}')
+    processTime=`date`
+    mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.insert({firmID:${firmID},firmName:\"${firmName}\",manufacturer:\"${manufacturer}\",firmSize:${firmSize},firmMD5:\"${firmMD5}\",firmPath:\"${firmPath}\",processTime:\"${processTime}\",OS:[],instructionSet:[],binFileCount:0,binFiles:[]});"
 	echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1
     #process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle arg5:discrition
-    [ -n "$3" ] && mongo_update "$FirmName" "ProductClass" "$3"
-    [ -n "$4" ] && mongo_update "$FirmName" "ProductModel" "$4"
-    [ -n "$5" ] && mongo_update "$FirmName" "Description" "$5"
+    [ -n "$3" ] && mongo_update "$firmName" "ProductClass" "$3"
+    [ -n "$4" ] && mongo_update "$firmName" "ProductModel" "$4"
+    [ -n "$5" ] && mongo_update "$firmName" "Description" "$5"
 	echo "************************************************************"	
-	echo "decompressing:${FirmPath}"
+	echo "decompressing:${firmPath}"
 	echo "************************************************************"
-	binwalk  -e -M -q --depth=10 "$FirmPath" -C $DECOMPRESS_TEMP_PATH >/dev/null 2>&1 &
+	binwalk  -e -M -q --depth=10 "$firmPath" -C $DECOMPRESS_TEMP_PATH >/dev/null 2>&1 &
 	commandpid=$!
 	(sleep $DECOMPRESS_TIMEOUT;kill -9 $commandpid >/dev/null 2>&1;echo binwalk take too much time!!!) &
 	watchdogpid=$!
@@ -100,16 +100,16 @@ function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle
 	kill $sleeppid >/dev/null 2>&1
 	echo ">>decompress complete."
 	
-	if [ -d "${DECOMPRESS_TEMP_PATH}/_${FirmName}.extracted" ];then
+	if [ -d "${DECOMPRESS_TEMP_PATH}/_${firmName}.extracted" ];then
 		unset md5list
 		declare -a md5list
 		visitID=0
 		UNIX_PATH_MATCH=0
-		for BinPath in `find "${DECOMPRESS_TEMP_PATH}/_${FirmName}.extracted"`
+		for BinPath in `find "${DECOMPRESS_TEMP_PATH}/_${firmName}.extracted"`
 		do
 			echo "------------------------------------------------------"
-			BinName=${BinPath##*/}
-			echo "analysis: $BinName"
+			binName=${BinPath##*/}
+			echo "analysis: $binName"
 
 			for dirname in ${UNIX_DIRS[@]};do
 				if [ -d "$BinPath" -a  "${BinPath##*/}" == $dirname ];then
@@ -118,16 +118,16 @@ function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle
 				fi				
 			done
 
-			[ -f "$BinPath" ] && BinMd5=$(md5sum "$BinPath"|awk '{print $1}')
+			[ -f "$BinPath" ] && binMD5=$(md5sum "$BinPath"|awk '{print $1}')
 			visited_flag=0
 			for md5value in ${md5list[@]};do
-				[ "$BinMd5" = "$md5value" ] && visited_flag=1 && break				
+				[ "$binMD5" = "$md5value" ] && visited_flag=1 && break				
 			done
 			[ "$visited_flag" = 1 ] && echo ">>has the same md5!!!" && continue
-			md5list[$visitID]=$BinMd5
+			md5list[$visitID]=$binMD5
 			((visitID++))		
 
-			BinSuffix="" && [ "${BinName##*.}" != "$BinName" ] && BinSuffix="${BinName##*.}"
+			BinSuffix="" && [ "${binName##*.}" != "$binName" ] && BinSuffix="${binName##*.}"
 
 			if [ -z "$ExtensionWhitelist" -o -z "`file "$BinSuffix"|grep -E "$ExtensionWhitelist"`" ] && [ -z "$FileReturnWhitelist" -o -z "`file "$BinPath"|grep -E "$FileReturnWhitelist"`" ] ;then
 				[ -d "$BinPath" ] && echo ">>this is a directory!!!" && continue
@@ -136,21 +136,21 @@ function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle
 				[ -n "`file "$BinSuffix"|grep -E "$ExtensionBlacklist"`" ] && echo ">>in the suffix blacklist!!!" && continue
 				[ -n "`file "$BinPath"|grep -E "$FileReturnBlacklist"`" ] && echo ">>in the file return blacklist!!!" && continue			
 			fi
-			BinInstSet="unknown"
+			binInstSet="unknown"
 			if [ "$INSTRUCTION_SET_DETECT_METHOD_SELECT" -eq 0 ];then
 				./isdetect.py "$BinPath" >>/dev/null
 				case $? in
-					0) BinInstSet="unknown";;			
-					1) BinInstSet="MIPS-Little";;
-					2) BinInstSet="MIPS-Big";;
-					3) BinInstSet="ARM-Little";;
-					4) BinInstSet="ARM-Big";;
-					5) BinInstSet="PowerPC-Big";;
-					6) BinInstSet="PowerPC-Little";;
+					0) binInstSet="unknown";;			
+					1) binInstSet="MIPS-Little";;
+					2) binInstSet="MIPS-Big";;
+					3) binInstSet="ARM-Little";;
+					4) binInstSet="ARM-Big";;
+					5) binInstSet="PowerPC-Big";;
+					6) binInstSet="PowerPC-Little";;
 				esac		
-				echo ">>>>find ${BinInstSet} by instruction detect arithmetic"		
+				echo ">>>>find ${binInstSet} by instruction detect arithmetic"		
 			fi
-			if [ "$INSTRUCTION_SET_DETECT_METHOD_SELECT" -eq 1 ] && [ "$BinInstSet" = "unknown" ] && [ -n "`file "$BinPath"|grep ELF`" ];then
+			if [ "$INSTRUCTION_SET_DETECT_METHOD_SELECT" -eq 1 ] && [ "$binInstSet" = "unknown" ] && [ -n "`file "$BinPath"|grep ELF`" ];then
 				temp=0
 				if [ -n "`file "$BinPath"|grep MIPS`" ];then
 					temp=1
@@ -163,59 +163,59 @@ function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle
 					[ -n "`file "$BinPath"|grep LSB`" ] && temp=6
 				fi
 				case $temp in
-					0) BinInstSet="unknown";;			
-					1) BinInstSet="MIPS-Little";;
-					2) BinInstSet="MIPS-Big";;
-					3) BinInstSet="ARM-Little";;
-					4) BinInstSet="ARM-Big";;
-					5) BinInstSet="PowerPC-Big";;
-					6) BinInstSet="PowerPC-Little";;
+					0) binInstSet="unknown";;			
+					1) binInstSet="MIPS-Little";;
+					2) binInstSet="MIPS-Big";;
+					3) binInstSet="ARM-Little";;
+					4) binInstSet="ARM-Big";;
+					5) binInstSet="PowerPC-Big";;
+					6) binInstSet="PowerPC-Little";;
 				esac
-				echo ">>>>find ${BinInstSet} by elf header"
+				echo ">>>>find ${binInstSet} by elf header"
 			fi
-			BinSize=$(ls -l "$BinPath"|awk '{print $5}')
-			if [ "$BinInstSet" != "unknown" ] || [ -n "$ExtensionWhitelist" -a -n "`file "$BinSuffix"|grep -E "$ExtensionWhitelist"`" ] || [ -n "$FileReturnWhitelist" -a -n "`file "$BinPath"|grep -E "$FileReturnWhitelist"`" ] ;then
+			binSize=$(ls -l "$BinPath"|awk '{print $5}')
+			if [ "$binInstSet" != "unknown" ] || [ -n "$ExtensionWhitelist" -a -n "`file "$BinSuffix"|grep -E "$ExtensionWhitelist"`" ] || [ -n "$FileReturnWhitelist" -a -n "`file "$BinPath"|grep -E "$FileReturnWhitelist"`" ] ;then
 				((fileid++))
 				echo ">>store bin"
-				BinSave=${fileid}_${BinName}_${BinInstSet}
-				cp "$BinPath" "${BINARY_STORE_PATH}/${BinSave}"
-				mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmID:${FirmID}},{\$push:{BinFiles:
-{BinName:\"${BinName}\",BinSize:\"${BinSize}\",BinMD5:\"${BinMd5}\",BinInstSet:\"${BinInstSet}\",BinSave:\"${BinSave}\"} }});"
+				binSave=${fileid}_${binName}_${binInstSet}
+				cp "$BinPath" "${BINARY_STORE_PATH}/${binSave}"
+				mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmID:${firmID}},{\$push:{binFiles:
+{binName:\"${binName}\",binSize:\"${binSize}\",binMD5:\"${binMD5}\",binInstSet:\"${binInstSet}\",binSave:\"${binSave}\"} }});"
 				echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1	
 				for plugin in ${plugins[@]}
 				do
 					content=$(Plugin/$plugin "$BinPath")
 					[ -z "$content" ] && continue
-					mongo_cmd="db.firmwares.update({FirmID:${FirmID},\"BinFiles.BinMD5\":\"${BinMd5}\"},{\$set:{\"BinFiles.$.${plugin}\":'${content}'}})"
+					mongo_cmd="db.firmwares.update({firmID:${firmID},\"binFiles.binMD5\":\"${binMD5}\"},{\$set:{\"binFiles.$.${plugin}\":'${content}'}})"
 					echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1						
 				done
 				
-				mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmID:${FirmID}},{\$inc:{BinFileCount:1}});"
+				mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmID:${firmID}},{\$inc:{binFileCount:1}});"
 				echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1			
 
-				mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmID:${FirmID}},{\$addToSet:{InstuctionSet:\"${BinInstSet}\"}});"
+				mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmID:${firmID}},{\$addToSet:{instructionSet:\"${binInstSet}\"}});"
 				echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1			
 
 				if [ -n "`binwalk "$BinPath"|grep Linux`" ];then
 					OS="Linux"
-					mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmID:${FirmID}},{\$addToSet:{OS:\"${OS}\"}});"
+					mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmID:${firmID}},{\$addToSet:{OS:\"${OS}\"}});"
 					echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1			
 				fi
 				if [ -n "`binwalk "$BinPath"|grep VxWorks`" ];then
 					OS="VxWorks"
-					mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmID:${FirmID}},{\$addToSet:{OS:\"${OS}\"}});"
+					mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmID:${firmID}},{\$addToSet:{OS:\"${OS}\"}});"
 					echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1			
 				fi
 				if [ -n "`file "$BinPath"|grep "Windows CE"`" ];then
 					OS="Windows CE"
-					mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmID:${FirmID}},{\$addToSet:{OS:\"${OS}\"}});"
+					mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmID:${firmID}},{\$addToSet:{OS:\"${OS}\"}});"
 					echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1			
 				fi
 			fi
 		done
-		[ $UNIX_PATH_MATCH -ge $UNIX_THRESHOLD  ] && OS="Linux" && mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({FirmID:${FirmID}},{\$addToSet:{OS:\"${OS}\"}});" && echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1	
-		rm -rf "${DECOMPRESS_TEMP_PATH}/_${FirmName}.extracted"
-		echo ">>remove ${DECOMPRESS_TEMP_PATH}/_${FirmName}.extracted"		
+		[ $UNIX_PATH_MATCH -ge $UNIX_THRESHOLD  ] && OS="Linux" && mongo_cmd="db.${MONGO_FIRM_COLLECTION_NAME}.update({firmID:${firmID}},{\$addToSet:{OS:\"${OS}\"}});" && echo "$mongo_cmd"|mongo ${MONGO_IP}:${MONGO_PORT}/${MONGO_DATABASE} --quiet --shell >/dev/null 2>&1	
+		rm -rf "${DECOMPRESS_TEMP_PATH}/_${firmName}.extracted"
+		echo ">>remove ${DECOMPRESS_TEMP_PATH}/_${firmName}.extracted"		
 	else
 		echo ">>binwalk can't extracted any file!!!"
 	fi
