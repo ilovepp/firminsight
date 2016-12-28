@@ -129,7 +129,7 @@ function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle
 
 			BinSuffix="" && [ "${binName##*.}" != "$binName" ] && BinSuffix="${binName##*.}"
 
-			if [ -z "$ExtensionWhitelist" -o -z "`file "$BinSuffix"|grep -E "$ExtensionWhitelist"`" ] && [ -z "$FileReturnWhitelist" -o -z "`file "$BinPath"|grep -E "$FileReturnWhitelist"`" ] ;then
+			if [ -z "$ExtensionWhitelist" -o -z "`echo "$BinSuffix"|grep -E "$ExtensionWhitelist"`" ] && [ -z "$FileReturnWhitelist" -o -z "`file "$BinPath"|grep -E "$FileReturnWhitelist"`" ] ;then
 				[ -d "$BinPath" ] && echo ">>this is a directory!!!" && continue
 				[ ! -f "$BinPath" ] && echo ">>this is not a normal file!!!" && continue
 				[ -L "$BinPath" ] && echo ">>this is a symbolic link to other file!!!" && continue
@@ -137,20 +137,8 @@ function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle
 				[ -n "`file "$BinPath"|grep -E "$FileReturnBlacklist"`" ] && echo ">>in the file return blacklist!!!" && continue			
 			fi
 			binInstSet="unknown"
-			if [ "$INSTRUCTION_SET_DETECT_METHOD_SELECT" -eq 0 ];then
-				./isdetect.py "$BinPath" >>/dev/null
-				case $? in
-					0) binInstSet="unknown";;			
-					1) binInstSet="MIPS-Little";;
-					2) binInstSet="MIPS-Big";;
-					3) binInstSet="ARM-Little";;
-					4) binInstSet="ARM-Big";;
-					5) binInstSet="PowerPC-Big";;
-					6) binInstSet="PowerPC-Little";;
-				esac		
-				echo ">>>>find ${binInstSet} by instruction detect arithmetic"		
-			fi
-			if [ "$INSTRUCTION_SET_DETECT_METHOD_SELECT" -eq 1 ] && [ "$binInstSet" = "unknown" ] && [ -n "`file "$BinPath"|grep ELF`" ];then
+
+            if [ -n "`file "$BinPath"|grep ELF`" ];then
 				temp=0
 				if [ -n "`file "$BinPath"|grep MIPS`" ];then
 					temp=1
@@ -173,6 +161,21 @@ function process_one_firm(){  #arg1:path arg2:manufacturer arg3:class arg4:modle
 				esac
 				echo ">>>>find ${binInstSet} by elf header"
 			fi
+            
+			if [ "$INSTRUCTION_SET_DETECT_METHOD_SELECT" -eq 0 ] && [ "$binInstSet" = "unknown" ];then
+				./isdetect.py "$BinPath" >>/dev/null
+				case $? in
+					0) binInstSet="unknown";;			
+					1) binInstSet="MIPS-Little";;
+					2) binInstSet="MIPS-Big";;
+					3) binInstSet="ARM-Little";;
+					4) binInstSet="ARM-Big";;
+					5) binInstSet="PowerPC-Big";;
+					6) binInstSet="PowerPC-Little";;
+				esac		
+				echo ">>>>find ${binInstSet} by instruction detect arithmetic"		
+			fi
+			
 			binSize=$(ls -l "$BinPath"|awk '{print $5}')
 			if [ "$binInstSet" != "unknown" ] || [ -n "$ExtensionWhitelist" -a -n "`file "$BinSuffix"|grep -E "$ExtensionWhitelist"`" ] || [ -n "$FileReturnWhitelist" -a -n "`file "$BinPath"|grep -E "$FileReturnWhitelist"`" ] ;then
 				((fileid++))

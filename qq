@@ -1,0 +1,38 @@
+固件爬虫结构图：
+├── FirmCrawler
+│   ├── CONFIG.cfg　爬虫模块配置文件，主要保存一些厂商的登录所需的用户名和密码
+│   ├── download_process.py　显示下载情况及实时状态
+│   ├── Rockwelldownload.py　下载Ｒockwell厂商固件
+│   ├── download.py
+│   ├── FirmCrawler.sh
+│   ├── mycrawler
+│   │   ├── dbUtil.py
+│   │   ├── __init__.py
+│   │   ├── items.py
+│   │   ├── pipelines.py
+│   │   ├── settings.py
+│   │   └── spiders
+│   │       ├── abbSpider.py
+│   │       ├── ciscoSpider.py
+│   │       ├── dlinkSpider.py
+│   │       ├── foscamSpider.py
+│   │       ├── hikvisionSpider.py
+│   │       ├── __init__.py
+│   │       ├── openwrtSpider.py
+│   │       ├── rockwellSpider.py
+│   │       ├── schneiderSpider.py
+│   │       ├── siemensSpider.py
+│   │       ├── softpediaSpider.py
+│   │       ├── tomatoSpider.py
+│   │       ├── tplinkSpider.py
+│   │       ├── vipaSpider.py
+│   ├── run.py
+│   ├── run_spider.sh
+│   ├── scrapy.cfg
+│   ├── setup.py
+│   ├── siemensdownload.py
+│   ├── Start.py
+│   ├── vipadownload.py
+│   └── vipaSpider.py
+├── GLOBAL_CONFIG 全局配置，包含mongodb数据库信息以及相关保存下载路径
+├── README.md　整体信息介绍

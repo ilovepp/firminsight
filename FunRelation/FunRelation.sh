@@ -67,3 +67,4 @@ mongocmd "db.${MONGO_RELATION_COLLECTION_NAME}.insert({vulID:${vul_id},firmID:${
 
 #./FunRelation.sh 1671 vxWorks_bmx1000.bin 7
 #./FunRelation.sh 1628 1 6
+
